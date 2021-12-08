@@ -4,7 +4,7 @@ class Node {
         this.data = data
         this.next = null;
     }
-  }
+}
 
 //The code below shows the implementation of a linked list class with a constructor. Notice that if the head node is not passed, the head is initialised to null.
 class LinkedList {
@@ -36,33 +36,25 @@ class LinkedList {
 
     // Remove a node from the end
     pop() {
-        let cur = this.head;
-
-        // only one or no item exists
-        if (!cur) return null;
-        if (!cur.next) {
+        let currentList = this.head;
+        if (!this.head) return;
+        if (this.head.next === null) {
             this.head = null;
-            return cur;
+            this.tail = null;
+        } else{
+            while (currentList.next.next) {
+                currentList = currentList.next;
+            }
+            this.tail = currentList;
+            this.tail.next = null;
         }
-        // move till the 2nd last
-        while (cur.next.next)
-            cur = cur.next;
-        
-        let last = this.tail;
-        this.tail = cur;
-        this.tail.next = null;
-        return last;
     }
 
     // Remove a node from the beginning
     popFirst() {
-        let first = this.head;
         if (this.head && this.head.next) {
             this.head = this.head.next;
-            first.next = null;
-        }
-        else this.head = null;
-        return first;
+        } else this.head = null;
     }
 
     // Return the first node
@@ -77,47 +69,37 @@ class LinkedList {
 
     // Remove Node at specific point from the list
     removeAt(index) {
+        if (index === 0) this.popFirst();
         let i = 0;
-        let cur = this.head;
-        let prev = null;
-
-        while (cur != null) {
-        if (i == index) {
-            // remove
-            if (prev == null)
-            this.head = cur.next;
-            else prev.next = cur.next;
-            cur.next = null;
-            return cur.value;
+        let currentList = this.head;
+        let prevList = null;
+        while (currentList.next) {
+            if (i === index) {
+                prevList.next = currentList.next;
+                currentList = null;
+            } else {
+                prevList = currentList;
+                currentList = currentList.next;
+                i++;
+            }
         }
-        else {
-            prev = cur;
-            cur = cur.next;
-            i++;
-        }
-        }
-        return null;
     }
 
     // Insert Node at specific point from the list
-    insertAt(index, value) {
-        if (index == 0) return this.prepend(value);
-        let cur = this.head;
+    insertAt(index, data) {
+        if (index === 0) this.addFirst(data);
         let i = 0;
-
-        while (cur != null) {
-            if (i == index - 1) {
-                let node = new Node(value);
-                node.next = cur.next;
-                cur.next = node;
-                return true;
-            }
-            else {
+        let currentList = 0;
+        while (!currentList) {
+            if (i === index - 1) {
+                const node = new Node(value);
+                node.next = currentList.next;
+                currentList.next = node;
+            }else {
                 i++;
-                cur = cur.next;
+                currentList = currentList.next;
             }
         }
-        return false;
     }
 
     // Combert linked list values into array
