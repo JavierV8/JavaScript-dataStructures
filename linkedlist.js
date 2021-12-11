@@ -171,8 +171,61 @@ class LinkedList {
             }
         }
     }
+
+    isPalindrome(head) {
+        var slow = head;
+        var ispalin = true;
+        var stack = [];
+        // Traverse the given list from head to tail and push every visited node to stack.
+        while (slow != null) {
+            stack.push(slow.data);
+            slow = slow.next;
+        }
+        // Traverse the list again. 
+        // For every visited node, pop a node from the stack and compare data of popped node with the currently visited node
+        while (head != null) {
+            var i = stack.pop();
+            if (head.data == i) {
+                ispalin = true;
+            } else {
+                ispalin = false;
+                break;
+            }
+            head = head.next;
+        }
+        return ispalin;
+    }
+
+    intersection(head1, head2) {
+        var peek = function(stack) {
+            return stack[stack.length - 1];
+        };
+        var stack1 = [];
+        var stack2 = [];
+        while (head1 !== null) {
+          stack1.push(head1);
+          head1 = head1.next;
+        }
+        while (head2 !== null) {
+          stack2.push(head2);
+          head2 = head2.next;
+        }
+        if (stack1.length === 0 || stack2.length === 0) {
+            return undefined;
+        } else if (peek(stack1) !== peek(stack2)) {
+            return undefined;
+        } else {
+            var intersect;
+            while (peek(stack1) === peek(stack2)) {
+                intersect = peek(stack1);
+                stack1.pop();
+                stack2.pop();
+            }
+            return intersect;
+        }
+    };
 }
-/*
+
 let l = new LinkedList();
 l.add(1);
 l.add(2);
@@ -192,7 +245,6 @@ let list = new LinkedList();
 for (let elem of [1, 5, 1, 6, 8, 6, 8, 8, 8, 8]) {
   list.add(elem);
 }
-
 list.removeDup();
 list._toArray();
 
@@ -200,24 +252,19 @@ let list2 = new LinkedList();
 for (let elem of [1, 2, 3, 4, 5]) {
     list2.add(elem);
 }
-
-
-
 console.log(list2.findKTH(3));
-
 console.log(list2.findKTH(10));
-
 console.log(list2.findKTH(-1));
-
 console.log(list2.findKTH(0));
-
 console.log(list2.findKTH(1));
-*/
-let list3 = new LinkedList();
 
+let list3 = new LinkedList();
 for (let elem of [1, 2, 7, 8, 1, 6, 3, 4, 5, 6, 6, 3, 4, 7, 2, 9, 8, 1, 10]) {
     list3.add(elem);
 }
-
 list3.partition(5);
 list3._toArray();
+
+
+
+
