@@ -150,8 +150,29 @@ class LinkedList {
         return slow
     }
 
+    partition(num) {
+        let currentList = this.head;
+        let prevList = null;
+        while(currentList) {
+            if (currentList.data < num) {
+                if(prevList === null) {
+                    prevList = currentList;
+                    currentList = currentList.next;
+                } else {
+                    const val = currentList.next;
+                    prevList.next = currentList.next;
+                    currentList.next = this.head;
+                    this.head = currentList;
+                    currentList = val;
+                }
+            } else {
+                prevList = currentList;
+                currentList = currentList.next;
+            }
+        }
+    }
 }
-
+/*
 let l = new LinkedList();
 l.add(1);
 l.add(2);
@@ -191,3 +212,12 @@ console.log(list2.findKTH(-1));
 console.log(list2.findKTH(0));
 
 console.log(list2.findKTH(1));
+*/
+let list3 = new LinkedList();
+
+for (let elem of [1, 2, 7, 8, 1, 6, 3, 4, 5, 6, 6, 3, 4, 7, 2, 9, 8, 1, 10]) {
+    list3.add(elem);
+}
+
+list3.partition(5);
+list3._toArray();
