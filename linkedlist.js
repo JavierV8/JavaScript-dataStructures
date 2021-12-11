@@ -73,7 +73,7 @@ class LinkedList {
         let i = 0;
         let currentList = this.head;
         let prevList = null;
-        while (currentList.next) {
+        while (!currentList) {
             if (i === index) {
                 prevList.next = currentList.next;
                 currentList = null;
@@ -89,10 +89,10 @@ class LinkedList {
     insertAt(index, data) {
         if (index === 0) this.addFirst(data);
         let i = 0;
-        let currentList = 0;
+        let currentList = this.head;
         while (!currentList) {
             if (i === index - 1) {
-                const node = new Node(value);
+                const node = new Node(data);
                 node.next = currentList.next;
                 currentList.next = node;
             }else {
@@ -113,6 +113,43 @@ class LinkedList {
 
         return arr;
     }
+
+    removeDup() {
+        const list = new Set();
+        let currentList = this.head;
+        let prevList = null;
+        while(currentList) {
+            if (!list.has(currentList.data)) {
+                list.add(currentList.data);
+                prevList = currentList;
+                currentList = currentList.next;
+            } else {
+                let elem = currentList; 
+                prevList.next = currentList.next;
+                currentList = currentList.next;
+                elem.next = null;
+            }
+        }
+    }
+
+    findKTH(k) {
+        // do iteratively
+        //define two pointers , fast and slow pointer
+        let fast = this.head
+        let slow = this.head
+        //Move fast pointer k steps in the linkedlist while slow remains at head
+        for(let i=0;i<k;i++){
+            if(fast === null) return null //k is larger than length of linked list
+            fast = fast.next
+        }
+        // move both pointers at the same time, slow pointer will exit at kth node from the end
+        while(fast !== null){
+            fast =fast.next
+            slow=slow.next
+        }
+        return slow
+    }
+
 }
 
 let l = new LinkedList();
@@ -129,3 +166,28 @@ l.getLast();   // Return the last node
 l.removeAt(1); // Remove Node at specific point from the list
 l.insertAt(1, 1); // Insert Node at specific point from the list
 l._toArray();  // Combert linked list values into array
+
+let list = new LinkedList();
+for (let elem of [1, 5, 1, 6, 8, 6, 8, 8, 8, 8]) {
+  list.add(elem);
+}
+
+list.removeDup();
+list._toArray();
+
+let list2 = new LinkedList();
+for (let elem of [1, 2, 3, 4, 5]) {
+    list2.add(elem);
+}
+
+
+
+console.log(list2.findKTH(3));
+
+console.log(list2.findKTH(10));
+
+console.log(list2.findKTH(-1));
+
+console.log(list2.findKTH(0));
+
+console.log(list2.findKTH(1));
