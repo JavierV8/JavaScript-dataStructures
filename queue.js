@@ -1,8 +1,6 @@
-class Queue
-{
+class Queue {
     // Array is used to implement a Queue
-    constructor()
-    {
+    constructor() {
         this.items = [];
     }
       
