@@ -1,3 +1,10 @@
+/*
+Queue is a linear data structure that follows the FIFO(First In First Out) 
+principle. It contains two-pointers:
+
+front pointer: The front pointer contains the address of the starting element.
+rear pointer: The rear pointer contains the address of the last element of the queue.
+*/
 class Queue {
     // Array is used to implement a Queue
     constructor() {
