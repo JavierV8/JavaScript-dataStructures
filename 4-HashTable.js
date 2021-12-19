@@ -1,3 +1,5 @@
+https://www.geeksforgeeks.org/top-20-hashing-technique-based-interview-questions/
+
 class HashTable {
     constructor() {
         this.table = new Array(127);
@@ -7,7 +9,7 @@ class HashTable {
     _hash(key) {
         let hash = 0;
         for (let i = 0; i < key.length; i++) {
-        hash += key.charCodeAt(i);
+            hash += key.charCodeAt(i);
         }
         return hash % this.table.length;
     }
@@ -15,16 +17,16 @@ class HashTable {
     set(key, value) {
         const index = this._hash(key);
         if (this.table[index]) {
-        for (let i = 0; i < this.table[index].length; i++) {
-            if (this.table[index][i][0] === key) {
-            this.table[index][i][1] = value;
-            return;
+            for (let i = 0; i < this.table[index].length; i++) {
+                if (this.table[index][i][0] === key) {
+                    this.table[index][i][1] = value;
+                    return;
+                }
             }
-        }
-        this.table[index].push([key, value]);
+            this.table[index].push([key, value]);
         } else {
-        this.table[index] = [];
-        this.table[index].push([key, value]);
+            this.table[index] = [];
+            this.table[index].push([key, value]);
         }
         this.size++;
     }
@@ -32,28 +34,27 @@ class HashTable {
     get(key) {
         const index = this._hash(key);
         if (this.table[index]) {
-        for (let i = 0; i < this.table.length; i++) {
-            if (this.table[index][i][0] === key) {
-            return this.table[index][i][1];
+            for (let i = 0; i < this.table.length; i++) {
+                if (this.table[index][i][0] === key) {
+                return this.table[index][i][1];
+                }
             }
-        }
         }
         return undefined;
     }
 
     remove(key) {
         const index = this._hash(key);
-
         if (this.table[index] && this.table[index].length) {
-        for (let i = 0; i < this.table.length; i++) {
-            if (this.table[index][i][0] === key) {
-            this.table[index].splice(i, 1);
-            this.size--;
-            return true;
+            for (let i = 0; i < this.table.length; i++) {
+                if (this.table[index][i][0] === key) {
+                    this.table[index].splice(i, 1);
+                    this.size--;
+                    return true;
+                }
             }
-        }
         } else {
-        return false;
+            return false;
         }
     }
 

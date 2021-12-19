@@ -1,12 +1,26 @@
-//As stated earlier, a list node contains two items: the data and the pointer to the next node.
+//https://www.geeksforgeeks.org/top-20-linked-list-interview-question/
+
+/*
+Linked list is a linear data structure in which elements are not in contiguous 
+memory locations like arrays. It consists of a group of nodes and each node has 
+its own data and address to the next node. In an array, the elements are indexed 
+and you can instantly get to an element but in a linked list, you have to start 
+with the head and work your way through until you get to the desired element.
+
+The advantage of the linked list is that the insertion and deletion in linked 
+list are easier than array, as the elements in an array are stored in a consecutive 
+location so linked list have insertion and deletion in constant time O(1). Also, 
+its memory consumption is efficient as the size of the linked list can grow or 
+shrink according to our requirements.
+
+but linke list have lienar acces to a data O(n)
+*/
 class Node {
     constructor(data) {
         this.data = data
         this.next = null;
     }
 }
-
-//The code below shows the implementation of a linked list class with a constructor. Notice that if the head node is not passed, the head is initialised to null.
 class LinkedList {
     constructor(head = null) {
         this.head = head;
