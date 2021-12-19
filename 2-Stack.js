@@ -1,3 +1,14 @@
+/*
+Stack is a linear data structure that follows the LIFO(Last In First Out) 
+or FILO(First In Last Out) principle. It contains only one pointer the top 
+pointer that points to the topmost element of the stack. Whenever we add an 
+element to the stack, it is added at the top of the stack and also whenever 
+we delete an element from the stack it is deleted from the top of the stack.
+
+Unlike an array, a stack does not offer constant-time access to the ith item. 
+However, it does allow constanttime adds and removes, as it doesn't require 
+shifting elements around.
+*/
 class Stack {
     // Array is used to implement stack
     constructor() {
