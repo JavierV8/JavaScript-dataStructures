@@ -1,39 +1,96 @@
-class Node {
-    constructor(value) {
+/*
+The tree is a non-linear hierarchical data structure consists of nodes connected 
+by edges. Each node contains some data and the link of other nodes that can be 
+called children. The topmost node of the tree is known as a root node. Nodes with 
+linked child nodes are called internal nodes while those without child nodes are 
+external nodes(leaf nodes). 
+*/
+class TreeNode {
+    constructor(key, value = key, parent = null) {
+        this.key = key;
         this.value = value;
+        this.parent = parent;
         this.children = [];
-        this.parent = null;
     }
 
-    setParentNode(node) {
-        this.parent = node;
+    get isLeaf() {
+        return this.children.length === 0;
     }
-    getParentNode() {
-        return this.parent;
-    }
-    addChild(node) {
-        node.setParentNode(this);
-        this.children[this.children.length] = node;
-    }
-    getChildren() {
-        return this.children;
-    }
-    removeChildren() {
-        this.children = [];
+
+    get hasChildren() {
+        return !this.isLeaf;
     }
 }
 
-var root = new Node('root');
-root.addChild(new Node('child 0'));
-root.addChild(new Node('child 1'));
-var children = root.getChildren();
-for(var i = 0; i < children.length; i++) {
-    for(var j = 0; j < 5; j++) {
-        children[i].addChild(new Node('second level child ' + j));
+class Tree {
+    constructor(key, value = key) {
+        this.root = new TreeNode(key, value);
+    }
+
+    *preOrderTraversal(node = this.root) {
+        yield node;
+        if (node.children.length) {
+            for (let child of node.children) {
+                yield* this.preOrderTraversal(child);
+            }
+        }
+    }
+
+    *postOrderTraversal(node = this.root) {
+        if (node.children.length) {
+            for (let child of node.children) {
+                yield* this.postOrderTraversal(child);
+            }
+        }
+        yield node;
+    }
+
+    insert(parentNodeKey, key, value = key) {
+        for (let node of this.preOrderTraversal()) {
+            if (node.key === parentNodeKey) {
+                node.children.push(new TreeNode(key, value, node));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    remove(key) {
+        for (let node of this.preOrderTraversal()) {
+            const filtered = node.children.filter(c => c.key !== key);
+            if (filtered.length !== node.children.length) {
+                node.children = filtered;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    find(key) {
+        for (let node of this.preOrderTraversal()) {
+            if (node.key === key) return node;
+        }
+        return undefined;
     }
 }
-console.log(root);
-children[0].removeChildren();
-console.log(root);
-console.log(root.getParentNode());
-console.log(children[1].getParentNode());
+
+const tree = new Tree(1, 'AB');
+
+tree.insert(1, 11, 'AC');
+tree.insert(1, 12, 'BC');
+tree.insert(12, 121, 'BG');
+
+[...tree.preOrderTraversal()].map(x => x.value);
+// ['AB', 'AC', 'BC', 'BCG']
+
+tree.root.value;              // 'AB'
+tree.root.hasChildren;        // true
+
+tree.find(12).isLeaf;         // false
+tree.find(121).isLeaf;        // true
+tree.find(121).parent.value;  // 'BC'
+
+tree.remove(12);
+
+[...tree.postOrderTraversal()].map(x => x.value);
+// ['AC', 'AB']

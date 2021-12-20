@@ -1,5 +1,3 @@
-//https://www.geeksforgeeks.org/top-20-linked-list-interview-question/
-
 /*
 Linked list is a linear data structure in which elements are not in contiguous 
 memory locations like arrays. It consists of a group of nodes and each node has 

@@ -1,5 +1,3 @@
-//https://www.geeksforgeeks.org/top-20-hashing-technique-based-interview-questions/
-
 /*
 Hash table is an associative data structure that relates a key and a value using 
 a hash function, this function is used to calculate the index where the elements 
