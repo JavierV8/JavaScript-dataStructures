@@ -1,15 +1,10 @@
 /*
 Hash table is an associative data structure that relates a key and a value using 
-a hash function, this function is used to calculate the index where the elements 
-that we are saving in the table should go.
+a hash function, this function translates the key into an array’s index. 
+It shares some similarities with an array. In an array, the index is always a 
+number, while the index in a Map can be anything!
 
-The hash table save the elements in slots or backets, and the table could have 
-an arbitray numbers od slots and is the task of the hash function to determine 
-in witch slot have to go each element
-
-is the hash function the one that determine witch is the cost of this data strcuture
-
-In hash tables coul happend a thing call a colision and is when more than one 
+In hash tables coul happend a thing call a colision, and is when more than one 
 elements is asigned to the same slot by the hash function and by the moment that 
 more than one elements go to the same slot, it will added as a linked list in 
 the slot and the time when we watch to obtain an element we have to go throug all 
@@ -21,6 +16,12 @@ class HashTable {
         this.size = 0;
     }
 
+    /**
+     * Hash function, responsable to transform string into number
+     * 
+     * @param {any} key 
+     * @returns {number}
+     */
     _hash(key) {
         let hash = 0;
         for (let i = 0; i < key.length; i++) {
@@ -29,6 +30,13 @@ class HashTable {
         return hash % this.table.length;
     }
 
+    /**
+     * Set a value into the hash table.
+     * 
+     * @param {string} key 
+     * @param {any} value 
+     * @returns 
+     */
     set(key, value) {
         const index = this._hash(key);
         if (this.table[index]) {
@@ -46,6 +54,12 @@ class HashTable {
         this.size++;
     }
 
+    /**
+     * Get valio by their key
+     * 
+     * @param {number} key 
+     * @returns {any} value
+     */
     get(key) {
         const index = this._hash(key);
         if (this.table[index]) {
@@ -58,6 +72,11 @@ class HashTable {
         return undefined;
     }
 
+    /**
+     * Remove element from the hash table
+     * @param {number} key 
+     * @returns 
+     */
     remove(key) {
         const index = this._hash(key);
         if (this.table[index] && this.table[index].length) {
@@ -73,6 +92,9 @@ class HashTable {
         }
     }
 
+    /**
+     * 
+     */
     display() {
         this.table.forEach((values, index) => {
         const chainedValues = values.map(
