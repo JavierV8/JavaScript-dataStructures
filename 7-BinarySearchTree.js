@@ -1,3 +1,12 @@
+/*
+The Binary Search Tree (BST) is a specialization of the binary tree. BST has the 
+same restriction as a binary tree; each node has at most two children. However, 
+there’s another restriction: the values are ordered. It means the left child’s 
+value has to be less or equal than the parent and the right child’s value 
+has to be bigger than the parent.
+*/
+
+
 const BinaryTreeNode = require('./binary-tree-node');
 const Queue = require('./3-Queue');
 const Stack = require('./2-Stack');

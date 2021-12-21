@@ -1,3 +1,12 @@
+/*
+AVL tree is a self-balancing Binary Search Tree (BST) where the heights of the 
+two child subtrees of any node cannot differ by more than one. If at any time 
+they differ by more than one, rebalancing is done to restore this property.
+
+Thus AVL tree is invented which make sure the height of tree is always O(Logn) 
+where n is the number of nodes in the tree.
+*/
+
 const BinarySearchTree = require('./binary-search-tree');
 const {
   leftRotation,

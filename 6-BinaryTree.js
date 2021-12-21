@@ -1,3 +1,31 @@
+/*
+A tree is a non-linear data structure where a node can have zero or more connections.
+It’s similar to a linear data structures, but the main difference is that instead of 
+having the next and previous links, we have an 0 or more number of linked nodes called 
+(children/descendants).
+
+Tree data structures constraints
+- Can't make a circular loop or have more than two parents. Otherwise, wouldn’t be a 
+tree anymore but a graph. ‍️ ‍️
+- a tree must have only one root.
+
+TRAVERSAL
+Unlike linked lists, one-dimensional arrays and other linear data structures, 
+which are traversed in linear order, trees may be traversed in in depth-first or 
+breadth-first order. 
+
+There are different kinds of trees, depending on the restrictions. The trees with 
+two children or less are called binary.
+
+BINARY TREE:
+The binary restricts the nodes to have at most two children.
+Depending on how nodes are arranged in a binary tree, it can be full, complete and perfect:
+
+- Full binary tree: each node has exactly 0 or 2 children (but never 1).
+- Complete binary tree: when all levels except the last one are full with nodes.
+- Perfect binary tree: when all the levels (including the last one) are full of nodes.
+
+*/
 class BinaryTreeNode {
     constructor(key, value = key, parent = null) {
         this.key = key;
@@ -7,10 +35,18 @@ class BinaryTreeNode {
         this.right = null;
     }
 
+    /**
+     * Determine whether it is a terminal node
+     * @returns {boolean}
+     */
     get isLeaf() {
         return this.left === null && this.right === null;
     }
 
+    /**
+     * Determine whether it has children's
+     * @returns {boolean}
+     */
     get hasChildren() {
         return !this.isLeaf;
     }
@@ -21,24 +57,44 @@ class BinaryTree {
         this.root = new BinaryTreeNode(key, value);
     }
 
+    /**
+     * Traverse the tree starting from left tree, 
+     * @param {any} node 
+     */
     *inOrderTraversal(node = this.root) {
         if (node.left) yield* this.inOrderTraversal(node.left);
         yield node;
         if (node.right) yield* this.inOrderTraversal(node.right);
     }
 
+    /**
+     * 
+     * @param {*} node 
+     */
     *postOrderTraversal(node = this.root) {
         if (node.left) yield* this.postOrderTraversal(node.left);
         if (node.right) yield* this.postOrderTraversal(node.right);
         yield node;
     }
 
+    /**
+     * 
+     * @param {*} node 
+     */
     *preOrderTraversal(node = this.root) {
         yield node;
         if (node.left) yield* this.preOrderTraversal(node.left);
         if (node.right) yield* this.preOrderTraversal(node.right);
     }
 
+    /**
+     * Insert element
+     * @param {*} parentNodeKey 
+     * @param {*} key 
+     * @param {any} value 
+     * @param {any} param3 
+     * @returns 
+     */
     insert(
         parentNodeKey,
         key,
@@ -63,6 +119,11 @@ class BinaryTree {
         return false;
     }
 
+    /**
+     * Remove element
+     * @param {any} key 
+     * @returns 
+     */
     remove(key) {
         for (let node of this.preOrderTraversal()) {
             if (node.left.key === key) {
@@ -77,6 +138,11 @@ class BinaryTree {
         return false;
     }
 
+    /**
+     * Find elemment
+     * @param {number} key 
+     * @returns 
+     */
     find(key) {
         for (let node of this.preOrderTraversal()) {
             if (node.key === key) return node;
