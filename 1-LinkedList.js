@@ -93,9 +93,13 @@ class LinkedList {
      * Runtime: O(1)
      */
     popFirst() {
-        if (this.head && this.head.next) {
+        if (!this.head) return;
+        if (!this.head.next) {
+            this.head = null;
+            this.tail =null;
+        } else {
             this.head = this.head.next;
-        } else this.head = null;
+        }
     }
 
     /**
@@ -180,6 +184,8 @@ class LinkedList {
         return arr;
     }
 }
+
+module.exports = HasTable;
 
 let l = new LinkedList();
 l.add(1);
