@@ -126,9 +126,7 @@ class BinaryTreeNode {
 
   /**
    * Get the max height of the subtrees.
-   *
    * It recursively goes into each children calculating the height
-   *
    * Height: distance from the deepest leaf to this node
    */
   get height() {

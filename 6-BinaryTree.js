@@ -26,10 +26,10 @@ Depending on how nodes are arranged in a binary tree, it can be full, complete a
 - Perfect binary tree: when all the levels (including the last one) are full of nodes.
 
 */
+
 class BinaryTreeNode {
-    constructor(key, value = key, parent = null) {
-        this.key = key;
-        this.value = value;
+    constructor(data, parent = null) {
+        this.data = data;
         this.parent = parent;
         this.left = null;
         this.right = null;
@@ -39,7 +39,7 @@ class BinaryTreeNode {
      * Determine whether it is a terminal node
      * @returns {boolean}
      */
-    get isLeaf() {
+    get isTerminal() {
         return this.left === null && this.right === null;
     }
 
@@ -48,17 +48,27 @@ class BinaryTreeNode {
      * @returns {boolean}
      */
     get hasChildren() {
-        return !this.isLeaf;
+        return !this.isTerminal;
     }
 }
 
 class BinaryTree {
-    constructor(key, value = key) {
-        this.root = new BinaryTreeNode(key, value);
+    constructor(node) {
+        this.root = node;
     }
 
     /**
-     * Traverse the tree starting from left tree, 
+    * Depth-first traversal preOrder
+    * @param {*} node 
+    */
+    *preOrderTraversal(node = this.root) {
+        yield node;
+        if (node.left) yield* this.preOrderTraversal(node.left);
+        if (node.right) yield* this.preOrderTraversal(node.right);
+    }
+
+    /**
+     * Depth-first traversal inOrder
      * @param {any} node 
      */
     *inOrderTraversal(node = this.root) {
@@ -68,7 +78,7 @@ class BinaryTree {
     }
 
     /**
-     * 
+     * Depth-first traversal postOrder
      * @param {*} node 
      */
     *postOrderTraversal(node = this.root) {
@@ -78,13 +88,64 @@ class BinaryTree {
     }
 
     /**
-     * 
-     * @param {*} node 
+     * Breadth-First LEVEL ORDER TRAVERSAL
+     * @param {*} root 
+     * @returns 
      */
-    *preOrderTraversal(node = this.root) {
-        yield node;
-        if (node.left) yield* this.preOrderTraversal(node.left);
-        if (node.right) yield* this.preOrderTraversal(node.right);
+    *bfs() {
+        const queue = [];
+        queue.push(this.root);
+        while (queue.length !== 0) {
+            const node = queue.shift();
+            yield node;
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
+        }
+    }
+
+    /**
+     * LEVEL ORDER TRAVERSAL INSERTION
+     * function to insert element in binary tree at level order
+     * @param {*} temp 
+     * @param {*} key 
+     * @returns 
+     */
+    insert(data) {
+        const queue = [];
+        queue.push(this.root);
+        while (queue.length !== 0) {
+            const node = queue.shift();
+            if (!node.left) {
+                node.left = new BinaryTreeNode(data);
+                return true;
+            }
+            if (!node.right) {
+                node.right = new BinaryTreeNode(data);
+                return true;
+            }
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
+        }
+    }
+
+    /**
+     * Inserting key into the binary tree at 
+     * the first position available.
+     * @param {*} parentNodeKey 
+     * @param {*} key
+     * @returns 
+     */
+    add(data) {
+        for (let node of this.preOrderTraversal()) {
+            if (node.left === null) {
+                node.left = new BinaryTreeNode(data);
+                return true;
+            }
+            if (node.right === null) {
+                node.right = new BinaryTreeNode(data);
+                return true;
+            }
+        }
     }
 
     /**
@@ -95,23 +156,18 @@ class BinaryTree {
      * @param {any} param3 
      * @returns 
      */
-    insert(
-        parentNodeKey,
-        key,
-        value = key,
-        { left, right } = { left: true, right: true }
-    ) {
+    addAt(parentNode, data, left = true, right = true) {
         for (let node of this.preOrderTraversal()) {
-            if (node.key === parentNodeKey) {
+            if (node === parentNode) {
                 const canInsertLeft = left && node.left === null;
                 const canInsertRight = right && node.right === null;
                 if (!canInsertLeft && !canInsertRight) return false;
                 if (canInsertLeft) {
-                    node.left = new BinaryTreeNode(key, value, node);
+                    node.left = new BinaryTreeNode(data, node);
                     return true;
                 }
                 if (canInsertRight) {
-                    node.right = new BinaryTreeNode(key, value, node);
+                    node.right = new BinaryTreeNode(data, node);
                     return true;
                 }
             }
@@ -121,20 +177,40 @@ class BinaryTree {
 
     /**
      * Remove element
+     * Deleted node is replaced by the bottom-most and rightmost node. 
+     * This is different from BST deletion. Here we do not have any order 
+     * among elements, so we replace with the last element.
      * @param {any} key 
      * @returns 
      */
-    remove(key) {
-        for (let node of this.preOrderTraversal()) {
-            if (node.left.key === key) {
-                node.left = null;
-                return true;
+    remove(nodeToDelete) {
+        if (this.root.left == null && this.root.right == null) {
+            return false;
+        }
+        let key_node = null;
+        const queue = [];
+        queue.push(this.root);
+        let parentNode;
+        let currNode;
+        while (queue.length !== 0) {
+            currNode = queue.shift();
+            if (currNode === nodeToDelete) key_node = currNode;
+            if (currNode.left) {
+                parentNode = currNode; //storing the parent node
+                queue.push(currNode.left); 
             }
-            if (node.right.key === key) {
-                node.right = null;
-                return true;
+            if (currNode.right) {
+                parentNode = currNode; //storing the parent node
+                queue.push(currNode.right); 
             }
         }
+        if (key_node !== null) {
+            key_node.value = currNode.value; //replacing key_node's data to deepest node's data
+            parentNode.right == currNode ? parentNode.right = null : parentNode.left = null;
+            currNode = null;
+            return true;
+        }
+
         return false;
     }
 
@@ -143,36 +219,46 @@ class BinaryTree {
      * @param {number} key 
      * @returns 
      */
-    find(key) {
+    find(data) {
         for (let node of this.preOrderTraversal()) {
-            if (node.key === key) return node;
+            if (node.data === data) return node;
         }
         return undefined;
     }
 }
 
-const tree = new BinaryTree(1, 'AB');
+//------------------------------------------------------------------
+const root = new BinaryTreeNode(10);
+const tree = new BinaryTree(root);
 
-tree.insert(1, 11, 'AC');
-tree.insert(1, 12, 'BC');
-tree.insert(12, 121, 'BG', { right: true });
+//root.left = new BinaryTreeNode(11);
+//root.left.left = new BinaryTreeNode(7);
+//root.right = new BinaryTreeNode(9);
+//root.right.left = new BinaryTreeNode(15);
+//root.right.right = new BinaryTreeNode(8);
+tree.addAt(root, 11, true);
+tree.addAt(root.left, 7, true);
+tree.addAt(root, 9, false, true);
+tree.addAt(root.left, 15, false, true);
+tree.addAt(root.right, 8, false, true);
 
-[...tree.preOrderTraversal()].map(x => x.value);
-// ['AB', 'AC', 'BC', 'BCG']
 
-[...tree.inOrderTraversal()].map(x => x.value);
-// ['AC', 'AB', 'BC', 'BG']
+console.log("BFS traversal before insertion:");
+[...tree.bfs()].map(node => node.data);
 
-tree.root.value;                // 'AB'
-tree.root.hasChildren;          // true
+console.log("<br\>Inorder traversal after insertion:");
+tree.insert(12);
+[...tree.inOrderTraversal()].map(node => node.data);
 
-tree.find(12).isLeaf;           // false
-tree.find(121).isLeaf;          // true
-tree.find(121).parent.value;    // 'BC'
-tree.find(12).left;             // null
-tree.find(12).right.value;      // 'BG'
+console.log("<br\>Inorder traversal after removal:");
+tree.remove(root.left);
+[...tree.inOrderTraversal()].map(node => node.data);
 
-tree.remove(12);
+tree.root.hasChildren;
+tree.find(12).isTerminal;
+tree.find(121).isTerminal;
+tree.find(121).parent.data;
+tree.find(12).left;
+tree.find(12).right.data;
 
-[...tree.postOrderTraversal()].map(x => x.value);
-// ['AC', 'AB']
+//------------------------------------------------------------------

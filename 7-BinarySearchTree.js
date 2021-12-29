@@ -19,7 +19,6 @@ class BinarySearchTree {
 
     /**
      * Insert value on the BST.
-     *
      * If the value is already in the tree,
      * then it increases the multiplicity value
      * @param {any} value node's value to insert in the tree
@@ -85,9 +84,7 @@ class BinarySearchTree {
      * @returns {BinaryTreeNode} right-most node (max value)
      */
     getRightmost(node = this.root) {
-        if (!node || !node.right) {
-            return node;
-        }
+        if (!node || !node.right) return node;
         return this.getMax(node.right);
     }
 
@@ -97,9 +94,7 @@ class BinarySearchTree {
      * @returns {BinaryTreeNode} left-most node (min value)
      */
     getLeftmost(node = this.root) {
-        if (!node || !node.left) {
-            return node;
-        }
+        if (!node || !node.left) return node;
         return this.getMin(node.left);
     }
 
@@ -130,6 +125,10 @@ class BinarySearchTree {
 
         this.size -= 1;
         return true;
+    }
+
+    isBalanced() {
+
     }
 
     /**
@@ -166,13 +165,10 @@ class BinarySearchTree {
      */
     * bfs() {
         const queue = new Queue();
-
         queue.add(this.root);
-
         while (!queue.isEmpty()) {
             const node = queue.remove();
             yield node;
-
             if (node.left) { queue.add(node.left); }
             if (node.right) { queue.add(node.right); }
         }
@@ -185,15 +181,12 @@ class BinarySearchTree {
      */
     * dfs() {
         const stack = new Stack();
-
         stack.add(this.root);
-
         while (!stack.isEmpty()) {
             const node = stack.remove();
             yield node;
-
-            if (node.right) { stack.add(node.right); }
-            if (node.left) { stack.add(node.left); }
+            if (node.right) stack.add(node.right);
+            if (node.left) stack.add(node.left);
         }
     }
 
@@ -204,9 +197,9 @@ class BinarySearchTree {
      * @yields {BinaryTreeNode}
      */
     * inOrderTraversal(node = this.root) {
-        if (node && node.left) { yield* this.inOrderTraversal(node.left); }
+        if (node && node.left) yield* this.inOrderTraversal(node.left);
         yield node;
-        if (node && node.right) { yield* this.inOrderTraversal(node.right); }
+        if (node && node.right) yield* this.inOrderTraversal(node.right);
     }
 
     /**
@@ -217,8 +210,8 @@ class BinarySearchTree {
      */
     * preOrderTraversal(node = this.root) {
         yield node;
-        if (node.left) { yield* this.preOrderTraversal(node.left); }
-        if (node.right) { yield* this.preOrderTraversal(node.right); }
+        if (node.left) yield* this.preOrderTraversal(node.left);
+        if (node.right) yield* this.preOrderTraversal(node.right);
     }
 
     /**
@@ -227,37 +220,13 @@ class BinarySearchTree {
      * @yields {BinaryTreeNode}
      */
     * postOrderTraversal(node = this.root) {
-        if (node.left) { yield* this.postOrderTraversal(node.left); }
-        if (node.right) { yield* this.postOrderTraversal(node.right); }
+        if (node.left) yield* this.postOrderTraversal(node.left);
+        if (node.right) yield* this.postOrderTraversal(node.right);
         yield node;
     }
 
     /**
      * Represent Binary Tree as an array.
-     *
-     * Leaf nodes will have two `undefined` descendants.
-     *
-     * The array representation of the binary tree is as follows:
-     *
-     * First element (index=0) is the root.
-     * The following two elements (index=1,2) are descendants of the root: left (a) and right (b).
-     * The next two elements (index=3,4) are the descendants of a
-     * The next two elements (index=5,6) are the descendants of b and so on.
-     *
-     *  0     1            2             3       4        5       6        n
-     * [root, a=root.left, b=root.right, a.left, a.right, b.left, b.right, ...]
-     *
-     * You can also find the parents as follows
-     *
-     * e.g.
-     * Parent 0: children 1,2
-     * Parent 1: children 3,4
-     * Parent 2: children 5,6
-     * Parent 3: children 7,8
-     *
-     * Given any index you can find the parent index with the following formula:
-     *
-     * parent = (index) => Math.floor((index-1)/2)
      */
     toArray() {
         const array = [];

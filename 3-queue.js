@@ -15,7 +15,7 @@ class Queue {
      * 
      * @param {any} element 
      */
-    enqueue(element){    
+    add(element){    
         this.items.push(element);
     }
 
@@ -24,7 +24,7 @@ class Queue {
      * 
      * @returns {any}
      */
-    dequeue() {
+    remove() {
         if(this.isEmpty()) return "Underflow";
         return this.items.shift();
     }
@@ -60,17 +60,4 @@ class Queue {
     }
 }
 
-var queue = new Queue();
-console.log(queue.dequeue());
-console.log(queue.isEmpty());
-queue.enqueue(10);
-queue.enqueue(20);
-queue.enqueue(30);
-queue.enqueue(40);
-queue.enqueue(50);
-queue.enqueue(60);
-console.log(queue.front());
-console.log(queue.dequeue());
-console.log(queue.front());
-console.log(queue.dequeue());
-console.log(queue.printQueue());
+module.exports = Queue;
