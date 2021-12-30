@@ -10,7 +10,6 @@ class BinaryTreeNode {
     this.value = value;
     this.left = null;
     this.right = null;
-    this.meta = {};
     this.parent = null;
     this.parentSide = null;
   }
@@ -69,7 +68,7 @@ class BinaryTreeNode {
   /**
    * Node is leaf is it has no descendants
    */
-  get isLeaf() {
+  get isTerminal() {
     return !this.left && !this.right;
   }
 
@@ -91,23 +90,12 @@ class BinaryTreeNode {
     return parent.sibling;
   }
 
+  /**
+   * 
+   */
   get grandparent() {
     const { parent } = this;
     return parent && parent.parent;
-  }
-
-  /**
-   * Get color
-   */
-  get color() {
-    return this.meta.color;
-  }
-
-  /**
-   * Set Color
-   */
-  set color(value) {
-    this.meta.color = value;
   }
 
   /**
@@ -158,9 +146,7 @@ class BinaryTreeNode {
    * @param {any} value (optional) if not provided is a getter, otherwise a setter.
    */
   data(value) {
-    if (value === undefined) {
-      return this.meta.data;
-    }
+    if (value === undefined) return this.meta.data;
     this.meta.data = value;
     return this;
   }

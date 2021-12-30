@@ -58,77 +58,6 @@ class BinaryTree {
     }
 
     /**
-    * Depth-first traversal preOrder
-    * @param {*} node 
-    */
-    *preOrderTraversal(node = this.root) {
-        yield node;
-        if (node.left) yield* this.preOrderTraversal(node.left);
-        if (node.right) yield* this.preOrderTraversal(node.right);
-    }
-
-    /**
-     * Depth-first traversal inOrder
-     * @param {any} node 
-     */
-    *inOrderTraversal(node = this.root) {
-        if (node.left) yield* this.inOrderTraversal(node.left);
-        yield node;
-        if (node.right) yield* this.inOrderTraversal(node.right);
-    }
-
-    /**
-     * Depth-first traversal postOrder
-     * @param {*} node 
-     */
-    *postOrderTraversal(node = this.root) {
-        if (node.left) yield* this.postOrderTraversal(node.left);
-        if (node.right) yield* this.postOrderTraversal(node.right);
-        yield node;
-    }
-
-    /**
-     * Breadth-First LEVEL ORDER TRAVERSAL
-     * @param {*} root 
-     * @returns 
-     */
-    *bfs() {
-        const queue = [];
-        queue.push(this.root);
-        while (queue.length !== 0) {
-            const node = queue.shift();
-            yield node;
-            if (node.left) queue.push(node.left);
-            if (node.right) queue.push(node.right);
-        }
-    }
-
-    /**
-     * LEVEL ORDER TRAVERSAL INSERTION
-     * function to insert element in binary tree at level order
-     * @param {*} temp 
-     * @param {*} key 
-     * @returns 
-     */
-    insert(data) {
-        const queue = [];
-        queue.push(this.root);
-        while (queue.length !== 0) {
-            const node = queue.shift();
-            if (!node.left) {
-                node.left = new BinaryTreeNode(data);
-                return true;
-            }
-            if (!node.right) {
-                node.right = new BinaryTreeNode(data);
-                return true;
-            }
-            if (node.left) queue.push(node.left);
-            if (node.right) queue.push(node.right);
-        }
-    }
-
-    /**
      * Inserting key into the binary tree at 
      * the first position available.
      * @param {*} parentNodeKey 
@@ -197,11 +126,11 @@ class BinaryTree {
             if (currNode === nodeToDelete) key_node = currNode;
             if (currNode.left) {
                 parentNode = currNode; //storing the parent node
-                queue.push(currNode.left); 
+                queue.push(currNode.left);
             }
             if (currNode.right) {
                 parentNode = currNode; //storing the parent node
-                queue.push(currNode.right); 
+                queue.push(currNode.right);
             }
         }
         if (key_node !== null) {
@@ -224,6 +153,52 @@ class BinaryTree {
             if (node.data === data) return node;
         }
         return undefined;
+    }
+
+    /**
+    * Depth-first traversal preOrder
+    * @param {*} node 
+    */
+    *preOrderTraversal(node = this.root) {
+        yield node;
+        if (node.left) yield* this.preOrderTraversal(node.left);
+        if (node.right) yield* this.preOrderTraversal(node.right);
+    }
+
+    /**
+     * Depth-first traversal inOrder
+     * @param {any} node 
+     */
+    *inOrderTraversal(node = this.root) {
+        if (node.left) yield* this.inOrderTraversal(node.left);
+        yield node;
+        if (node.right) yield* this.inOrderTraversal(node.right);
+    }
+
+    /**
+     * Depth-first traversal postOrder
+     * @param {*} node 
+     */
+    *postOrderTraversal(node = this.root) {
+        if (node.left) yield* this.postOrderTraversal(node.left);
+        if (node.right) yield* this.postOrderTraversal(node.right);
+        yield node;
+    }
+
+    /**
+     * Breadth-First LEVEL ORDER TRAVERSAL
+     * @param {*} root 
+     * @returns 
+     */
+    *bfs() {
+        const queue = [];
+        queue.push(this.root);
+        while (queue.length !== 0) {
+            const node = queue.shift();
+            yield node;
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
+        }
     }
 }
 

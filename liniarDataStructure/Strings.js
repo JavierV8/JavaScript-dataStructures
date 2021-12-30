@@ -13,10 +13,7 @@ The canonical example of an operation that's deceptively expensive due to string
 immutability is the following:
 */
 const Mystring = "this is a string";
- newstring = '';
-
-for (const character in Mystring) newString += character;
-
+newstring = '';
 /*
 The operation above has a time complexity of O(n²) where n is the length of string, 
 because each addition of a character to newstring creates an entirely new string 

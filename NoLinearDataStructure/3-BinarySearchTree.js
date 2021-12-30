@@ -7,9 +7,7 @@ has to be bigger than the parent.
 */
 
 
-const BinaryTreeNode = require('./binary-tree-node');
-const Queue = require('./3-Queue');
-const Stack = require('./2-Stack');
+const BinaryTreeNode = require('./7-BinarySearchTreeNode');
 
 class BinarySearchTree {
     constructor() {
@@ -70,46 +68,22 @@ class BinarySearchTree {
      * @returns {object} node and its parent like {node, parent}
      */
     findNodeAndParent(value, node = this.root, parent = null) {
-        if (!node || node.value === value) {
-            return { found: node, parent };
-        } if (value < node.value) {
+        if (!node || node.value === value) return { found: node, parent };
+        if (value < node.value) {
             return this.findNodeAndParent(value, node.left, node);
         }
         return this.findNodeAndParent(value, node.right, node);
     }
-
-    /**
-     * Get the node with the max value of subtree: the right-most value.
-     * @param {BinaryTreeNode} node subtree's root
-     * @returns {BinaryTreeNode} right-most node (max value)
-     */
-    getRightmost(node = this.root) {
-        if (!node || !node.right) return node;
-        return this.getMax(node.right);
-    }
-
-    /**
-     * Get the node with the min value of subtree: the left-most value.
-     * @param {BinaryTreeNode} node subtree's root
-     * @returns {BinaryTreeNode} left-most node (min value)
-     */
-    getLeftmost(node = this.root) {
-        if (!node || !node.left) return node;
-        return this.getMin(node.left);
-    }
-
+    
     /**
      * Remove a node from the tree
      * @returns {boolean} false if not found and true if it was deleted
      */
     remove(value) {
         const { found: nodeToRemove, parent } = this.findNodeAndParent(value); // <1>
-
         if (!nodeToRemove) return false; // <2>
-
         // Combine left and right children into one subtree without nodeToRemove
         const removedNodeChildren = this.combineLeftIntoRightSubtree(nodeToRemove); // <3>
-
         if (nodeToRemove.meta.multiplicity && nodeToRemove.meta.multiplicity > 1) { // <4>
             nodeToRemove.meta.multiplicity -= 1; // handles duplicated
         } else if (nodeToRemove === this.root) { // <5>
@@ -127,50 +101,18 @@ class BinarySearchTree {
         return true;
     }
 
-    isBalanced() {
-
-    }
-
-    /**
-     * Combine left into right children into one subtree without given parent node.
-     *
-     * @example combineLeftIntoRightSubtree(30)
-     *
-     *      30*                             40
-     *    /     \                          /  \
-     *   10      40      combined        35   50
-     *     \    /  \    ---------->     /
-     *     15  35   50                 10
-     *                                   \
-     *                                    15
-     *
-     * It takes node 30 left subtree (10 and 15) and put it in the
-     * leftmost node of the right subtree (40, 35, 50).
-     *
-     * @param {BinaryTreeNode} node
-     * @returns {BinaryTreeNode} combined subtree
-     */
-    combineLeftIntoRightSubtree(node) {
-        if (node.right) {
-            const leftmost = this.getLeftmost(node.right);
-            leftmost.setLeftAndUpdateParent(node.left);
-            return node.right;
-        }
-        return node.left;
-    }
-
     /**
      * Breath-first search for a tree (always starting from the root element).
      * @yields {BinaryTreeNode}
      */
     * bfs() {
-        const queue = new Queue();
-        queue.add(this.root);
-        while (!queue.isEmpty()) {
-            const node = queue.remove();
+        const queue = [];
+        queue.push(this.root);
+        while (queue.length !== 0) {
+            const node = queue.shift();
             yield node;
-            if (node.left) { queue.add(node.left); }
-            if (node.right) { queue.add(node.right); }
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
         }
     }
 
@@ -180,13 +122,13 @@ class BinarySearchTree {
      * @yields {BinaryTreeNode}
      */
     * dfs() {
-        const stack = new Stack();
-        stack.add(this.root);
-        while (!stack.isEmpty()) {
-            const node = stack.remove();
+        const stack = [];
+        stack.push(this.root);
+        while (stack.length !== 0) {
+            const node = stack.pop();
             yield node;
-            if (node.right) stack.add(node.right);
-            if (node.left) stack.add(node.left);
+            if (node.right) stack.push(node.right);
+            if (node.left) stack.push(node.left);
         }
     }
 
@@ -230,33 +172,19 @@ class BinarySearchTree {
      */
     toArray() {
         const array = [];
-        const queue = new Queue();
+        const queue = [];
         const visited = new Map();
-
-        if (this.root) { queue.add(this.root); }
-
-        while (!queue.isEmpty()) {
-            const current = queue.remove();
+        if (this.root) queue.push(this.root);
+        while (queue.length !== 0) {
+            const current = queue.shift();
             array.push(current && current.value);
-
             if (current) { visited.set(current); }
-
-            if (current && !visited.has(current.left)) { queue.add(current.left); }
-            if (current && !visited.has(current.right)) { queue.add(current.right); }
+            if (current && !visited.has(current.left)) queue.push(current.left);
+            if (current && !visited.has(current.right)) queue.push(current.right);
         }
 
         return array;
     }
 }
-
-// aliases
-BinarySearchTree.prototype.insert = BinarySearchTree.prototype.add;
-BinarySearchTree.prototype.set = BinarySearchTree.prototype.add;
-BinarySearchTree.prototype.delete = BinarySearchTree.prototype.remove;
-BinarySearchTree.prototype.getMin = BinarySearchTree.prototype.getLeftmost;
-BinarySearchTree.prototype.minimum = BinarySearchTree.prototype.getMin;
-BinarySearchTree.prototype.getMax = BinarySearchTree.prototype.getRightmost;
-BinarySearchTree.prototype.maximum = BinarySearchTree.prototype.getMax;
-BinarySearchTree.prototype.get = BinarySearchTree.prototype.find;
 
 module.exports = BinarySearchTree;
