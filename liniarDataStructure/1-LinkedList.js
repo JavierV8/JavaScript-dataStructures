@@ -1,25 +1,17 @@
 /*
 Linked list is a linear data structure in which elements are not in contiguous 
 memory locations like arrays. It consists of a group of nodes and each node has 
-its own data and address to the next node. In an array, the elements are indexed 
-and you can instantly get to an element but in a linked list, you have to start 
-with the head and work your way through, until you get to the desired element,
-meaning that acces to an element have linear time acces O(n).
+its own data and address to the next node. 
 
-The advantage of the linked list is that the insertion and deletion in linked 
-list are easier than array, as the elements in an array are stored in a consecutive 
-location so linked list have insertion and deletion in constant time O(1).
-
-Linked Lists can be:
-- Singly: every item has a pointer to the next.
-- Doubly: every item has a reference to the next and the previous.
-- Circular: the last element points to the first one, forming an infinite loop.
+The advantage of the linked list is that the insertion and deletion are easier 
+than array, as the elements in an array are stored in a consecutive location so 
+linked list have insertion and deletion in constant time O(1).
 
 Use arrays when:
 - You want to access random elements by index 'is constant time O(1)'.
 - You need two-dimensional and multi-dimensional arrays.
 
-Use a doubly linked list when:
+Use linked list when:
 - You want to access elements in a sequential manner.
 - You want to insert elements at the start and end of the list.
 - You want to save some memory when dealing with possibly large data sets.
